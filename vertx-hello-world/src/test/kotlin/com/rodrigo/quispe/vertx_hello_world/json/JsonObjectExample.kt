@@ -1,5 +1,6 @@
 package com.rodrigo.quispe.vertx_hello_world.json
 
+import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
@@ -32,6 +33,18 @@ class JsonObjectExample {
     assertEquals(1, asJsonObject.getInteger("id"))
     assertEquals("Rodrigo", asJsonObject.getString("name"))
     assertEquals(true, asJsonObject.getBoolean("love_vertx"))
+  }
+
+  @Test
+  fun jsonArrayCanBeMapped() {
+    val myJsonArray = JsonArray()
+    myJsonArray
+      .add(JsonObject().put("id", 1))
+      .add(JsonObject().put("id", 2))
+      .add(JsonObject().put("id", 3))
+      .add("randomValue")
+
+    assertEquals("""[{"id":1},{"id":2},{"id":3},"randomValue"]""", myJsonArray.encode())
   }
 }
 
