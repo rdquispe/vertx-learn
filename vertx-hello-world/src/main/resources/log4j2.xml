@@ -7,7 +7,7 @@
   </Appenders>
   <Loggers>
     <Logger name="com.rodrigo.quispe.vertx_hello_world" level="DEBUG"/>
-    <Root level="error">
+    <Root level="INFO">
       <AppenderRef ref="Console"/>
     </Root>
   </Loggers>
