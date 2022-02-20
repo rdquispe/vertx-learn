@@ -17,6 +17,8 @@ repositories {
 }
 
 val vertxVersion = "4.2.5"
+val loggingVersion = "2.17.1"
+val slf4jVersion = "1.7.36"
 val junitJupiterVersion = "5.7.0"
 
 val mainVerticleName = "com.rodrigo.quispe.vertx_hello_world.MainVerticle"
@@ -42,10 +44,10 @@ dependencies {
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
 
-  implementation("org.apache.logging.log4j:log4j-api:2.17.1")
-  implementation("org.apache.logging.log4j:log4j-core:2.17.1")
-  implementation("org.apache.logging.log4j:log4j-slf4j-impl:2.17.1")
-  implementation("org.slf4j:slf4j-api:1.7.36")
+  implementation("org.apache.logging.log4j:log4j-api:$loggingVersion")
+  implementation("org.apache.logging.log4j:log4j-core:$loggingVersion")
+  implementation("org.apache.logging.log4j:log4j-slf4j-impl:$loggingVersion")
+  implementation("org.slf4j:slf4j-api:$slf4jVersion")
 }
 
 val compileKotlin: KotlinCompile by tasks
