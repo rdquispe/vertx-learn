@@ -20,7 +20,7 @@ val vertxVersion = "4.2.5"
 val loggingVersion = "2.17.1"
 val slf4jVersion = "1.7.36"
 val junitJupiterVersion = "5.7.0"
-
+val jacksonVersion = "2.13.1"
 val mainVerticleName = "com.rodrigo.quispe.vertx_hello_world.MainVerticle"
 val launcherClassName = "io.vertx.core.Launcher"
 
@@ -48,6 +48,8 @@ dependencies {
   implementation("org.apache.logging.log4j:log4j-core:$loggingVersion")
   implementation("org.apache.logging.log4j:log4j-slf4j-impl:$loggingVersion")
   implementation("org.slf4j:slf4j-api:$slf4jVersion")
+
+  implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
 }
 
 val compileKotlin: KotlinCompile by tasks

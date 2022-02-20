@@ -46,5 +46,18 @@ class JsonObjectExample {
 
     assertEquals("""[{"id":1},{"id":2},{"id":3},"randomValue"]""", myJsonArray.encode())
   }
-}
 
+  @Test
+  fun canMapObject() {
+    val person = Person(1, "Rodrigo", true)
+    val rodrigo = JsonObject.mapFrom(person)
+    assertEquals(1, rodrigo.getInteger("id"))
+    assertEquals("Rodrigo", rodrigo.getString("name"))
+    assertEquals(true, rodrigo.getBoolean("lovesVertx"))
+
+    val person2 = rodrigo.mapTo(Person::class.java)
+    assertEquals(person.id, person2.id)
+    assertEquals(person.name, person2.name)
+    assertEquals(person.lovesVertx, person2.lovesVertx)
+  }
+}
