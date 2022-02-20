@@ -3,6 +3,7 @@ package com.rodrigo.quispe.vertx_stock_broker
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.Vertx
+import io.vertx.ext.web.Router
 import org.slf4j.LoggerFactory
 
 class MainVerticle : AbstractVerticle() {
@@ -10,13 +11,12 @@ class MainVerticle : AbstractVerticle() {
   private val logger = LoggerFactory.getLogger(MainVerticle::class.java)
 
   override fun start(startPromise: Promise<Void>) {
+    val restApi = Router.router(vertx)
+    AssetsRestApi.attach(restApi)
     vertx
       .createHttpServer()
-      .requestHandler { req ->
-        req.response()
-          .putHeader("content-type", "text/plain")
-          .end("Hello from Vert.x!")
-      }
+      .requestHandler (restApi)
+      .exceptionHandler { error -> logger.error("HTTP_ERROR_SERVER", error) }
       .listen(8888) { http ->
         if (http.succeeded()) {
           startPromise.complete()
