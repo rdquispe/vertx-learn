@@ -3,6 +3,7 @@ package com.rodrigo.quispe.vertx_stock_broker
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.Vertx
+import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Router
 import org.slf4j.LoggerFactory
 
@@ -12,6 +13,15 @@ class MainVerticle : AbstractVerticle() {
 
   override fun start(startPromise: Promise<Void>) {
     val restApi = Router.router(vertx)
+    restApi.route().failureHandler { errorContext ->
+      if (errorContext.response().ended()) {
+        return@failureHandler
+      }
+      logger.error("ROUTE_ERROR", errorContext.failure())
+      errorContext.response()
+        .setStatusCode(500)
+        .end(JsonObject().put("message", "Something when error :(").encode())
+    }
     AssetsRestApi.attach(restApi)
     vertx
       .createHttpServer()
