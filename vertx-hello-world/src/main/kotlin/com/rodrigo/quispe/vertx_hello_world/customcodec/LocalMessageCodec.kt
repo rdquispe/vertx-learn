@@ -28,6 +28,6 @@ class LocalMessageCodec<T> : MessageCodec<T, T> {
   }
 
   override fun systemCodecID(): Byte {
-    return -1
+    return - 1
   }
 }
