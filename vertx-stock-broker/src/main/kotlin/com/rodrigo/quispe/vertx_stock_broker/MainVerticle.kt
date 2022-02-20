@@ -25,7 +25,7 @@ class MainVerticle : AbstractVerticle() {
     AssetsRestApi.attach(restApi)
     vertx
       .createHttpServer()
-      .requestHandler (restApi)
+      .requestHandler(restApi)
       .exceptionHandler { error -> logger.error("HTTP_ERROR_SERVER", error) }
       .listen(8888) { http ->
         if (http.succeeded()) {
