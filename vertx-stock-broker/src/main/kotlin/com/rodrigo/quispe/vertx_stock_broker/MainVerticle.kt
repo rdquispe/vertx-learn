@@ -7,9 +7,14 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Router
 import org.slf4j.LoggerFactory
 
+
 class MainVerticle : AbstractVerticle() {
 
   private val logger = LoggerFactory.getLogger(MainVerticle::class.java)
+
+  companion object {
+    const val PORT = 8888
+  }
 
   override fun start(startPromise: Promise<Void>) {
     val restApi = Router.router(vertx)
@@ -27,7 +32,7 @@ class MainVerticle : AbstractVerticle() {
       .createHttpServer()
       .requestHandler(restApi)
       .exceptionHandler { error -> logger.error("HTTP_ERROR_SERVER", error) }
-      .listen(8888) { http ->
+      .listen(PORT) { http ->
         if (http.succeeded()) {
           startPromise.complete()
           logger.info("HTTP server started on port 8888")
