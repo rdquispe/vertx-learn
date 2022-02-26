@@ -1,5 +1,6 @@
-package com.rodrigo.quispe.vertx_stock_broker
+package com.rodrigo.quispe.vertx_stock_broker.assets
 
+import com.rodrigo.quispe.vertx_stock_broker.MainVerticle
 import io.vertx.core.Vertx
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
