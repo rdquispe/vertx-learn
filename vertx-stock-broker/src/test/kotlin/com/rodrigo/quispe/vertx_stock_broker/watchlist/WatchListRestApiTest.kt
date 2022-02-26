@@ -2,8 +2,10 @@ package com.rodrigo.quispe.vertx_stock_broker.watchlist
 
 import com.rodrigo.quispe.vertx_stock_broker.MainVerticle
 import com.rodrigo.quispe.vertx_stock_broker.assets.Asset
+import io.netty.handler.codec.http.HttpHeaderValues
 import io.vertx.core.Future
 import io.vertx.core.Vertx
+import io.vertx.core.http.HttpHeaders
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.junit5.VertxExtension
@@ -40,6 +42,10 @@ class WatchListRestApiTest {
           logger.info("Response PUT {}", json)
           Assertions.assertEquals("""{"assets":[{"symbol":"AMZN"},{"symbol":"TSLA"}]}""", json.encode())
           Assertions.assertEquals(200, response.statusCode())
+          Assertions.assertEquals(
+            HttpHeaderValues.APPLICATION_JSON.toString(),
+            response.getHeader(HttpHeaders.CONTENT_TYPE.toString())
+          )
         }
       })
       .compose { next ->
@@ -50,6 +56,10 @@ class WatchListRestApiTest {
             logger.info("Response GET {}", json)
             Assertions.assertEquals("""{"assets":[{"symbol":"AMZN"},{"symbol":"TSLA"}]}""", json.encode())
             Assertions.assertEquals(200, response.statusCode())
+            Assertions.assertEquals(
+              HttpHeaderValues.APPLICATION_JSON.toString(),
+              response.getHeader(HttpHeaders.CONTENT_TYPE.toString())
+            )
             testContext.completeNow()
           })
         Future.succeededFuture<Any>()
@@ -78,6 +88,10 @@ class WatchListRestApiTest {
             logger.info("Response DELETE {}", json)
             Assertions.assertEquals("""{"assets":[{"symbol":"AMZN"},{"symbol":"TSLA"}]}""", json.encode())
             Assertions.assertEquals(200, response.statusCode())
+            Assertions.assertEquals(
+              HttpHeaderValues.APPLICATION_JSON.toString(),
+              response.getHeader(HttpHeaders.CONTENT_TYPE.toString())
+            )
             testContext.completeNow()
           })
         Future.succeededFuture<Any>()

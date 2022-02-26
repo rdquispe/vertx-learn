@@ -1,6 +1,8 @@
 package com.rodrigo.quispe.vertx_stock_broker.watchlist
 
+import io.netty.handler.codec.http.HttpHeaderValues
 import io.netty.handler.codec.http.HttpResponseStatus
+import io.vertx.core.http.HttpHeaders
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
@@ -30,20 +32,25 @@ class WatchListRestApi {
             )
           return@handler
         }
-        context.response().end(watchList.get().toJsonObject().toBuffer())
+        context.response()
+          .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
+          .end(watchList.get().toJsonObject().toBuffer())
       }
       parent.put(path).handler { context ->
         val accountId = getAccountId(context)
         val json = context.bodyAsJson
         val watchList = json.mapTo(WatchList::class.java)
         watchListPerAccount[UUID.fromString(accountId)] = watchList
-        context.response().end(json.toBuffer())
+        context.response()
+          .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
+          .end(json.toBuffer())
       }
       parent.delete(path).handler { context ->
         val accountId = getAccountId(context)
         val deleted = watchListPerAccount.remove(UUID.fromString(accountId))
         logger.info("DELETED: {}, REMAINING: {}", deleted, watchListPerAccount.values)
         context.response()
+          .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
           .end(deleted?.toJsonObject()?.toBuffer())
       }
     }

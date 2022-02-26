@@ -2,7 +2,9 @@ package com.rodrigo.quispe.vertx_stock_broker.quotes
 
 import com.rodrigo.quispe.vertx_stock_broker.assets.Asset
 import com.rodrigo.quispe.vertx_stock_broker.assets.AssetsRestApi
+import io.netty.handler.codec.http.HttpHeaderValues
 import io.netty.handler.codec.http.HttpResponseStatus
+import io.vertx.core.http.HttpHeaders
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Router
 import org.slf4j.LoggerFactory
@@ -28,6 +30,7 @@ class QuotesRestApi {
         val maybeQuote = Optional.ofNullable(cachedQuotes[assetParam])
         if (maybeQuote.isEmpty) {
           context.response()
+            .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
             .setStatusCode(HttpResponseStatus.NOT_FOUND.code())
             .end(
               JsonObject()
@@ -38,7 +41,9 @@ class QuotesRestApi {
         }
         val response = maybeQuote.get().toJsonObject()
         logger.info("PATH {} RESPONDS_WITH {}", context.normalizedPath(), response.encode())
-        context.response().end(response.toBuffer())
+        context.response()
+          .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
+          .end(response.toBuffer())
       }
     }
 

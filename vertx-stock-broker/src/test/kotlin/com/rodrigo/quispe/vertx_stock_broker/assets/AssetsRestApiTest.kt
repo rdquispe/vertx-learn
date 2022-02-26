@@ -1,7 +1,9 @@
 package com.rodrigo.quispe.vertx_stock_broker.assets
 
 import com.rodrigo.quispe.vertx_stock_broker.MainVerticle
+import io.netty.handler.codec.http.HttpHeaderValues
 import io.vertx.core.Vertx
+import io.vertx.core.http.HttpHeaders
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.junit5.VertxExtension
@@ -30,6 +32,7 @@ class AssetsRestApiTest {
           val json = response.bodyAsJsonArray()
           assertEquals("""[{"symbol":"AAPL"},{"symbol":"AMZN"},{"symbol":"FB"},{"symbol":"GOOG"},{"symbol":"MSFT"},{"symbol":"NFLX"},{"symbol":"TSLA"}]""", json.encode())
           assertEquals(200, response.statusCode())
+          assertEquals(HttpHeaderValues.APPLICATION_JSON.toString(), response.getHeader(HttpHeaders.CONTENT_TYPE.toString()))
           testContext.completeNow()
         }
       })

@@ -1,7 +1,9 @@
 package com.rodrigo.quispe.vertx_stock_broker.quotes
 
 import com.rodrigo.quispe.vertx_stock_broker.MainVerticle
+import io.netty.handler.codec.http.HttpHeaderValues
 import io.vertx.core.Vertx
+import io.vertx.core.http.HttpHeaders
 import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.junit5.VertxExtension
@@ -31,6 +33,7 @@ class QuotesRestApiTest {
           val json = response.bodyAsJsonObject()
           assertEquals("""{"symbol":"AMZN"}""", json.getJsonObject("asset").encode())
           assertEquals(200, response.statusCode())
+          assertEquals(HttpHeaderValues.APPLICATION_JSON.toString(), response.getHeader(HttpHeaders.CONTENT_TYPE.toString()))
           testContext.completeNow()
         }
       })
@@ -47,6 +50,7 @@ class QuotesRestApiTest {
           val json = response.bodyAsJsonObject()
           assertEquals(404, response.statusCode())
           assertEquals("""{"message":"quote for asset UNKNOWN not available!","path":"/quotes/UNKNOWN"}""", json.encode())
+          assertEquals(HttpHeaderValues.APPLICATION_JSON.toString(), response.getHeader(HttpHeaders.CONTENT_TYPE.toString()))
           testContext.completeNow()
         }
       })
