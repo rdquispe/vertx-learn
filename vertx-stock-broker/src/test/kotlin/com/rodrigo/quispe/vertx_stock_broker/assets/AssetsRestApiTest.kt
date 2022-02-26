@@ -22,14 +22,13 @@ class AssetsRestApiTest {
 
   @Test
   fun returns_all_assets(vertx: Vertx, testContext: VertxTestContext) {
-
     val client = WebClient.create(vertx, WebClientOptions().setDefaultPort(MainVerticle.PORT))
     client.get("/assets")
       .send()
       .onComplete(testContext.succeeding { response ->
         testContext.verify {
           val json = response.bodyAsJsonArray()
-          assertEquals("""[{"symbol":"AAPL"},{"symbol":"AMZN"},{"symbol":"NFLX"},{"symbol":"TSLA"}]""", json.encode())
+          assertEquals("""[{"symbol":"AAPL"},{"symbol":"AMZN"},{"symbol":"FB"},{"symbol":"GOOG"},{"symbol":"MSFT"},{"symbol":"NFLX"},{"symbol":"TSLA"}]""", json.encode())
           assertEquals(200, response.statusCode())
           testContext.completeNow()
         }

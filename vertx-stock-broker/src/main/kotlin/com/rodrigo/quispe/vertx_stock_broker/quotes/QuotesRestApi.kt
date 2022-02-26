@@ -1,6 +1,7 @@
 package com.rodrigo.quispe.vertx_stock_broker.quotes
 
 import com.rodrigo.quispe.vertx_stock_broker.assets.Asset
+import com.rodrigo.quispe.vertx_stock_broker.assets.AssetsRestApi
 import io.vertx.ext.web.Router
 import org.slf4j.LoggerFactory
 import java.math.BigDecimal
@@ -13,14 +14,19 @@ class QuotesRestApi {
     private val logger = LoggerFactory.getLogger(QuotesRestApi::class.java)
 
     fun attach(parent: Router) {
+      val cachedQuotes = hashMapOf<String, Quote>()
+      AssetsRestApi.ASSETS.forEach { symbol ->
+        cachedQuotes[symbol] = initRandomQuote(symbol)
+      }
       parent.get("/quotes/:asset")
         .handler { context ->
           val assetParam = context.pathParam("asset")
           logger.info("ASSET_PARAMETER: {}", assetParam)
-          val quote = initRandomQuote(assetParam)
-          val response = quote.toJsonObject()
-          logger.info("PATH {} RESPONDS_WITH {}", context.normalizedPath(), response.encode())
-          context.response().end(response.toBuffer())
+
+          val quote = cachedQuotes[assetParam]
+          val response = quote?.toJsonObject()
+          logger.info("PATH {} RESPONDS_WITH {}", context.normalizedPath(), response?.encode())
+          context.response().end(response?.toBuffer())
         }
     }
 

@@ -9,15 +9,13 @@ class AssetsRestApi {
   companion object {
     private val logger = LoggerFactory.getLogger(AssetsRestApi::class.java)
 
+    val ASSETS = mutableListOf("AAPL", "AMZN", "FB", "GOOG", "MSFT", "NFLX", "TSLA")
+
     fun attach(parent: Router) {
       parent.get("/assets")
         .handler { context ->
           val response = JsonArray()
-          response
-            .add(Asset("AAPL"))
-            .add(Asset("AMZN"))
-            .add(Asset("NFLX"))
-            .add(Asset("TSLA"))
+          ASSETS.stream().map { Asset(it) }.forEach(response::add)
 
           logger.info("PATH {} RESPONDS_WITH {}", context.normalizedPath(), response.encode())
           context.response().end(response.toBuffer())
