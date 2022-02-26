@@ -29,8 +29,24 @@ class QuotesRestApiTest {
       .onComplete(testContext.succeeding { response ->
         testContext.verify {
           val json = response.bodyAsJsonObject()
-          assertEquals("{\"symbol\":\"AMZN\"}", json.getJsonObject("asset").encode())
+          assertEquals("""{"symbol":"AMZN"}""", json.getJsonObject("asset").encode())
           assertEquals(200, response.statusCode())
+          testContext.completeNow()
+        }
+      })
+  }
+
+  @Test
+  fun returns_not_found_for_unknown_asset(vertx: Vertx, testContext: VertxTestContext) {
+
+    val client = WebClient.create(vertx, WebClientOptions().setDefaultPort(MainVerticle.PORT))
+    client.get("/quotes/UNKNOWN")
+      .send()
+      .onComplete(testContext.succeeding { response ->
+        testContext.verify {
+          val json = response.bodyAsJsonObject()
+          assertEquals(404, response.statusCode())
+          assertEquals("""{"message":"quote for asset UNKNOWN not available!","path":"/quotes/UNKNOWN"}""", json.encode())
           testContext.completeNow()
         }
       })
