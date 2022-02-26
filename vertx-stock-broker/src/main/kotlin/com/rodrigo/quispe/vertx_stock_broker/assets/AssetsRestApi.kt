@@ -22,6 +22,7 @@ class AssetsRestApi {
           logger.info("PATH {} RESPONDS_WITH {}", context.normalizedPath(), response.encode())
           context.response()
             .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
+            .putHeader("my-header", "my-value")
             .end(response.toBuffer())
         }
     }

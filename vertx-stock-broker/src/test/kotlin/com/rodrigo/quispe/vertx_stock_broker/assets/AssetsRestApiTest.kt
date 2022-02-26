@@ -33,6 +33,7 @@ class AssetsRestApiTest {
           assertEquals("""[{"symbol":"AAPL"},{"symbol":"AMZN"},{"symbol":"FB"},{"symbol":"GOOG"},{"symbol":"MSFT"},{"symbol":"NFLX"},{"symbol":"TSLA"}]""", json.encode())
           assertEquals(200, response.statusCode())
           assertEquals(HttpHeaderValues.APPLICATION_JSON.toString(), response.getHeader(HttpHeaders.CONTENT_TYPE.toString()))
+          assertEquals("my-value", response.getHeader("my-header"))
           testContext.completeNow()
         }
       })
