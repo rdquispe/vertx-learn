@@ -1,4 +1,4 @@
-package com.rodrigo.quispe.vertx_stock_broker.broker
+package com.rodrigo.quispe.vertx_stock_broker.assets
 
 import io.vertx.core.json.JsonArray
 import io.vertx.ext.web.Router
