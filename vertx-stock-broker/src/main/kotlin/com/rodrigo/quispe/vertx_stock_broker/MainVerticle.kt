@@ -1,5 +1,6 @@
 package com.rodrigo.quispe.vertx_stock_broker
 
+import com.rodrigo.quispe.vertx_stock_broker.broker.AssetsRestApi
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Promise
 import io.vertx.core.Vertx
@@ -25,9 +26,10 @@ class MainVerticle : AbstractVerticle() {
       logger.error("ROUTE_ERROR", errorContext.failure())
       errorContext.response()
         .setStatusCode(500)
-        .end(JsonObject().put("message", "Something when error :(").encode())
+        .end(JsonObject().put("message", "Something when error :(").toBuffer())
     }
     AssetsRestApi.attach(restApi)
+
     vertx
       .createHttpServer()
       .requestHandler(restApi)
