@@ -23,28 +23,7 @@ class QuotesRestApi {
       AssetsRestApi.ASSETS.forEach { symbol ->
         cachedQuotes[symbol] = initRandomQuote(symbol)
       }
-      parent.get("/quotes/:asset").handler { context ->
-        val assetParam = context.pathParam("asset")
-        logger.info("ASSET_PARAMETER: {}", assetParam)
-
-        val maybeQuote = Optional.ofNullable(cachedQuotes[assetParam])
-        if (maybeQuote.isEmpty) {
-          context.response()
-            .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
-            .setStatusCode(HttpResponseStatus.NOT_FOUND.code())
-            .end(
-              JsonObject()
-                .put("message", "quote for asset $assetParam not available!")
-                .put("path", context.normalizedPath()).toBuffer()
-            )
-          return@handler
-        }
-        val response = maybeQuote.get().toJsonObject()
-        logger.info("PATH {} RESPONDS_WITH {}", context.normalizedPath(), response.encode())
-        context.response()
-          .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
-          .end(response.toBuffer())
-      }
+      parent.get("/quotes/:asset").handler(GetQuoteHandler(cachedQuotes))
     }
 
     private fun initRandomQuote(assetParam: String): Quote =
