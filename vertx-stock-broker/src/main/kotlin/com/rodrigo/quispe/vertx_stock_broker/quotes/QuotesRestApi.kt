@@ -2,14 +2,9 @@ package com.rodrigo.quispe.vertx_stock_broker.quotes
 
 import com.rodrigo.quispe.vertx_stock_broker.assets.Asset
 import com.rodrigo.quispe.vertx_stock_broker.assets.AssetsRestApi
-import io.netty.handler.codec.http.HttpHeaderValues
-import io.netty.handler.codec.http.HttpResponseStatus
-import io.vertx.core.http.HttpHeaders
-import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Router
 import org.slf4j.LoggerFactory
 import java.math.BigDecimal
-import java.util.Optional
 import java.util.concurrent.ThreadLocalRandom
 
 class QuotesRestApi {

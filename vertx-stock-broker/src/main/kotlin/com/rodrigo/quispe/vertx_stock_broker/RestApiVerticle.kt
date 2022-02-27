@@ -1,6 +1,8 @@
 package com.rodrigo.quispe.vertx_stock_broker
 
 import com.rodrigo.quispe.vertx_stock_broker.assets.AssetsRestApi
+import com.rodrigo.quispe.vertx_stock_broker.config.BrokerConfig
+import com.rodrigo.quispe.vertx_stock_broker.config.ConfigLoader
 import com.rodrigo.quispe.vertx_stock_broker.quotes.QuotesRestApi
 import com.rodrigo.quispe.vertx_stock_broker.watchlist.WatchListRestApi
 import io.vertx.core.AbstractVerticle
@@ -17,11 +19,16 @@ class RestApiVerticle : AbstractVerticle() {
   private val logger = LoggerFactory.getLogger(RestApiVerticle::class.java)
 
   override fun start(startPromise: Promise<Void>) {
-    startHttpServerAndAttachRoutes(startPromise)
+
+    ConfigLoader.load(vertx)
+      .onFailure(startPromise::fail)
+      .onSuccess { configuration ->
+        logger.info("Retrived Configuration: {}", configuration)
+        startHttpServerAndAttachRoutes(startPromise, configuration)
+      }
   }
 
-
-  fun startHttpServerAndAttachRoutes(startPromise: Promise<Void>) {
+  private fun startHttpServerAndAttachRoutes(startPromise: Promise<Void>, configuration: BrokerConfig) {
     val restApi = Router.router(vertx)
     restApi.route()
       .handler(BodyHandler.create())
@@ -34,10 +41,10 @@ class RestApiVerticle : AbstractVerticle() {
       .createHttpServer()
       .requestHandler(restApi)
       .exceptionHandler { error -> logger.error("HTTP_ERROR_SERVER", error) }
-      .listen(MainVerticle.PORT) { http ->
+      .listen(configuration.serverPort) { http ->
         if (http.succeeded()) {
           startPromise.complete()
-          logger.info("HTTP server started on port 8888")
+          logger.info("HTTP server started on port {}", configuration.serverPort)
         } else {
           startPromise.fail(http.cause());
         }

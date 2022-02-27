@@ -1,9 +1,11 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import org.gradle.api.tasks.testing.logging.TestLogEvent.*
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-  kotlin ("jvm") version "1.6.10"
+  kotlin("jvm") version "1.6.10"
   application
   id("com.github.johnrengelman.shadow") version "7.0.0"
 }
@@ -37,6 +39,7 @@ dependencies {
   implementation("ch.qos.logback:logback-classic:1.2.10")
   implementation("com.fasterxml.jackson.core:jackson-core:2.13.1")
   implementation("com.fasterxml.jackson.core:jackson-databind:2.13.1")
+  implementation("io.vertx:vertx-config:4.2.4")
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
 }
@@ -60,5 +63,11 @@ tasks.withType<Test> {
 }
 
 tasks.withType<JavaExec> {
-  args = listOf("run", mainVerticleName, "--redeploy=$watchForChange", "--launcher-class=$launcherClassName", "--on-redeploy=$doOnChange")
+  args = listOf(
+    "run",
+    mainVerticleName,
+    "--redeploy=$watchForChange",
+    "--launcher-class=$launcherClassName",
+    "--on-redeploy=$doOnChange"
+  )
 }
