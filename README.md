@@ -4,5 +4,4 @@
 - Kotlin
 - VertX
 - JUnit5
-- RxJava
 - Gradle
