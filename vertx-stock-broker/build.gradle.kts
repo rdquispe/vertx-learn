@@ -37,6 +37,7 @@ dependencies {
   implementation("io.vertx:vertx-lang-kotlin")
   implementation("io.vertx:vertx-config-yaml")
   implementation("io.vertx:vertx-pg-client")
+  implementation("io.vertx:vertx-sql-client-templates")
   implementation("org.flywaydb:flyway-core:8.5.0")
   implementation("org.postgresql:postgresql:42.3.2")
   implementation(kotlin("stdlib-jdk8"))
