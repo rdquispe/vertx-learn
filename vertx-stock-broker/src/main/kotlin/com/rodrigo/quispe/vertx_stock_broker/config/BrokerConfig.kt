@@ -8,6 +8,7 @@ class BrokerConfig {
 
   var serverPort = 0
   var version = ""
+  var dbConfig: DbConfig = DbConfig()
 
   fun from(config: JsonObject): BrokerConfig {
     val serverPort = config.getInteger(ConfigLoader.SERVER_PORT)
@@ -23,6 +24,7 @@ class BrokerConfig {
     val brokerConfig = BrokerConfig()
     brokerConfig.serverPort = config.getInteger(ConfigLoader.SERVER_PORT)
     brokerConfig.version = version
+    brokerConfig.dbConfig = DbConfig()
     return brokerConfig
   }
 }
