@@ -1,12 +1,14 @@
 package com.rodrigo.quispe.vertx_stock_broker.config
 
 data class DbConfig(
-  val host: String = "localhost",
-  val port: Int = 5432,
-  val database: String = "vertx-stock-broker",
-  val user: String = "postgres",
-  val password: String = "secret"
+  val host: String,
+  val port: Int,
+  val database: String,
+  val user: String,
+  val password: String
 ) {
+
+  constructor() : this("", Int.MIN_VALUE, "", "", "")
 
   override fun toString(): String {
     return "DbConfig{" +

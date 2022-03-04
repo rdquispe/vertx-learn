@@ -23,7 +23,7 @@ class RestApiVerticle : AbstractVerticle() {
     ConfigLoader.load(vertx)
       .onFailure(startPromise::fail)
       .onSuccess { configuration ->
-        logger.info("Retrived Configuration: {}", configuration)
+        logger.info("Retrived Configuration: {}", configuration.toString())
         startHttpServerAndAttachRoutes(startPromise, configuration)
       }
   }

@@ -8,13 +8,18 @@ import io.vertx.core.Vertx
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 
-private const val CONFIG_FILE = "application.yml"
 
 class ConfigLoader {
 
   companion object {
+    const val CONFIG_FILE = "application.yml"
     const val SERVER_PORT = "SERVER_PORT"
-    private val EXPOSED_ENVIRONMENT_VARIABLES = listOf(SERVER_PORT)
+    const val DB_HOST = "DB_HOST"
+    const val DB_PORT = "DB_PORT"
+    const val DB_DATABASE = "DB_DATABASE"
+    const val DB_USER = "DB_USER"
+    const val DB_PASSWORD = "DB_PASSWORD"
+    private val EXPOSED_ENVIRONMENT_VARIABLES = listOf(SERVER_PORT, DB_HOST, DB_PORT, DB_DATABASE, DB_USER, DB_PASSWORD)
 
     fun load(vertx: Vertx): Future<BrokerConfig> {
 
