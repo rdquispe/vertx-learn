@@ -24,7 +24,20 @@ class BrokerConfig {
     val brokerConfig = BrokerConfig()
     brokerConfig.serverPort = config.getInteger(ConfigLoader.SERVER_PORT)
     brokerConfig.version = version
-    brokerConfig.dbConfig = DbConfig()
+    brokerConfig.dbConfig = parseDbConfig(config)
     return brokerConfig
+  }
+
+  private fun parseDbConfig(config: JsonObject): DbConfig =
+    DbConfig(
+      host = config.getString(ConfigLoader.DB_HOST),
+      port = config.getInteger(ConfigLoader.DB_PORT),
+      database = config.getString(ConfigLoader.DB_DATABASE),
+      user = config.getString(ConfigLoader.DB_USER),
+      password = config.getString(ConfigLoader.DB_PASSWORD)
+    )
+
+  override fun toString(): String {
+    return "BrokerConfig(serverPort=$serverPort, version='$version', dbConfig=$dbConfig)"
   }
 }
