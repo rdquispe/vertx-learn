@@ -12,6 +12,9 @@ import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.ext.web.handler.BodyHandler
+import io.vertx.pgclient.PgConnectOptions
+import io.vertx.pgclient.PgPool
+import io.vertx.sqlclient.PoolOptions
 import org.slf4j.LoggerFactory
 
 class RestApiVerticle : AbstractVerticle() {
@@ -29,11 +32,13 @@ class RestApiVerticle : AbstractVerticle() {
   }
 
   private fun startHttpServerAndAttachRoutes(startPromise: Promise<Void>, configuration: BrokerConfig) {
+    val db = createDbPool(configuration)
+
     val restApi = Router.router(vertx)
     restApi.route()
       .handler(BodyHandler.create())
       .failureHandler(handleFailure())
-    AssetsRestApi.attach(restApi)
+    AssetsRestApi.attach(restApi, db)
     QuotesRestApi.attach(restApi)
     WatchListRestApi.attach(restApi)
 
@@ -49,6 +54,19 @@ class RestApiVerticle : AbstractVerticle() {
           startPromise.fail(http.cause());
         }
       }
+  }
+
+  private fun createDbPool(configuration: BrokerConfig): PgPool {
+    val connectOptions = PgConnectOptions()
+      .setHost(configuration.dbConfig.host)
+      .setPort(configuration.dbConfig.port)
+      .setDatabase(configuration.dbConfig.database)
+      .setUser(configuration.dbConfig.user)
+      .setPassword(configuration.dbConfig.password)
+
+    val poolOptions = PoolOptions()
+      .setMaxSize(4)
+    return PgPool.pool(vertx, connectOptions, poolOptions)
   }
 
   private fun handleFailure(): Handler<RoutingContext> {
