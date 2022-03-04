@@ -1,7 +1,6 @@
 package com.rodrigo.quispe.vertx_stock_broker.assets
 
-import com.rodrigo.quispe.vertx_stock_broker.MainVerticle
-import com.rodrigo.quispe.vertx_stock_broker.config.ConfigLoader
+import com.rodrigo.quispe.vertx_stock_broker.AbstractTest
 import io.netty.handler.codec.http.HttpHeaderValues
 import io.vertx.core.Vertx
 import io.vertx.core.http.HttpHeaders
@@ -10,23 +9,17 @@ import io.vertx.ext.web.client.WebClientOptions
 import io.vertx.junit5.VertxExtension
 import io.vertx.junit5.VertxTestContext
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
 
 
 @ExtendWith(VertxExtension::class)
-class AssetsRestApiTest {
-
-  @BeforeEach
-  fun deploy_verticle(vertx: Vertx, testContext: VertxTestContext) {
-    System.setProperty(ConfigLoader.SERVER_PORT, "9000")
-    vertx.deployVerticle(MainVerticle(), testContext.succeeding<String> { _ -> testContext.completeNow() })
-  }
+class AssetsRestApiTest : AbstractTest() {
 
   @Test
   fun returns_all_assets(vertx: Vertx, testContext: VertxTestContext) {
-    val client = WebClient.create(vertx, WebClientOptions().setDefaultPort(MainVerticle.PORT))
+
+    val client = webClient(vertx)
     client.get("/assets")
       .send()
       .onComplete(testContext.succeeding { response ->
@@ -40,4 +33,7 @@ class AssetsRestApiTest {
         }
       })
   }
+
+  private fun webClient(vertx: Vertx) =
+    WebClient.create(vertx, WebClientOptions().setDefaultPort(TEST_SERVER_PORT))
 }
