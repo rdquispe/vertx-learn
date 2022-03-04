@@ -8,6 +8,8 @@ import io.vertx.core.Vertx
 import io.vertx.core.json.JsonArray
 import io.vertx.core.json.JsonObject
 
+private const val CONFIG_FILE = "application.yml"
+
 class ConfigLoader {
 
   companion object {
@@ -27,10 +29,16 @@ class ConfigLoader {
         .setType("sys")
         .setConfig(JsonObject().put("cache", false))
 
+      val yamlStore = ConfigStoreOptions()
+        .setType("file")
+        .setFormat("yaml")
+        .setConfig(JsonObject().put("path", CONFIG_FILE))
+
       val retriever = ConfigRetriever.create(
         vertx,
         ConfigRetrieverOptions()
           // Order defines overload rules
+          .addStore(yamlStore)
           .addStore(propertyStore)
           .addStore(envStore)
       )
