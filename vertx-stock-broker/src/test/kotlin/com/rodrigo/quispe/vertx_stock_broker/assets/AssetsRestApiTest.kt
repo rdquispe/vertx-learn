@@ -1,6 +1,7 @@
 package com.rodrigo.quispe.vertx_stock_broker.assets
 
 import com.rodrigo.quispe.vertx_stock_broker.MainVerticle
+import com.rodrigo.quispe.vertx_stock_broker.config.ConfigLoader
 import io.netty.handler.codec.http.HttpHeaderValues
 import io.vertx.core.Vertx
 import io.vertx.core.http.HttpHeaders
@@ -19,6 +20,7 @@ class AssetsRestApiTest {
 
   @BeforeEach
   fun deploy_verticle(vertx: Vertx, testContext: VertxTestContext) {
+    System.setProperty(ConfigLoader.SERVER_PORT, "9000")
     vertx.deployVerticle(MainVerticle(), testContext.succeeding<String> { _ -> testContext.completeNow() })
   }
 

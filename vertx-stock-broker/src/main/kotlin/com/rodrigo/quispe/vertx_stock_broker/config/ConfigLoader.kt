@@ -23,9 +23,15 @@ class ConfigLoader {
         .setType("env")
         .setConfig(JsonObject().put("keys", exposedKeys))
 
+      val propertyStore = ConfigStoreOptions()
+        .setType("sys")
+        .setConfig(JsonObject().put("cache", false))
+
       val retriever = ConfigRetriever.create(
         vertx,
         ConfigRetrieverOptions()
+          // Order defines overload rules
+          .addStore(propertyStore)
           .addStore(envStore)
       )
       return retriever.config.map(BrokerConfig()::from)
