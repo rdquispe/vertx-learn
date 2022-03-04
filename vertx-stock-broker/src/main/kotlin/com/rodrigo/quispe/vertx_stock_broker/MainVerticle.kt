@@ -1,6 +1,5 @@
 package com.rodrigo.quispe.vertx_stock_broker
 
-import com.rodrigo.quispe.vertx_stock_broker.config.ConfigLoader
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.DeploymentOptions
 import io.vertx.core.Promise
@@ -13,17 +12,25 @@ class MainVerticle : AbstractVerticle() {
   private val logger = LoggerFactory.getLogger(MainVerticle::class.java)
 
   override fun start(startPromise: Promise<Void>) {
-    vertx.deployVerticle(RestApiVerticle::class.java.name, DeploymentOptions().setInstances(processors()))
+    vertx.deployVerticle(VersionInfoVerticle::class.java.name)
+      .onFailure(startPromise::fail)
+      .onSuccess { id -> logger.info("DEPLOYED: {} with id: {}", VersionInfoVerticle::class.java.name, id) }
+      .compose { next -> deployRestApiVerticle(startPromise) }
+  }
+
+  private fun deployRestApiVerticle(startPromise: Promise<Void>) =
+    vertx.deployVerticle(RestApiVerticle::class.java.name, DeploymentOptions().setInstances(halfProcessors()))
       .onFailure {
         logger.error("FAILED_TO_DEPLOY: ", it.cause)
       }
       .onSuccess { id ->
-        logger.info("DEPLOYED_MAIN: with id: {}", id)
+        logger.info("DEPLOYED: {} with id: {}", RestApiVerticle::class.java.name, id)
         startPromise.complete()
       }
-  }
 
   private fun processors(): Int = Math.max(1, Runtime.getRuntime().availableProcessors())
+
+  private fun halfProcessors() = processors() / 2
 }
 
 fun main() {

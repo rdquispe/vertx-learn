@@ -35,6 +35,7 @@ dependencies {
   implementation("io.vertx:vertx-web")
   implementation("io.vertx:vertx-web-client")
   implementation("io.vertx:vertx-lang-kotlin")
+  implementation("io.vertx:vertx-config-yaml")
   implementation(kotlin("stdlib-jdk8"))
   implementation("ch.qos.logback:logback-classic:1.2.10")
   implementation("com.fasterxml.jackson.core:jackson-core:2.13.1")
