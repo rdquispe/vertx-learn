@@ -36,10 +36,13 @@ dependencies {
   implementation("io.vertx:vertx-web-client")
   implementation("io.vertx:vertx-lang-kotlin")
   implementation("io.vertx:vertx-config-yaml")
+
+  // Postgres Client
   implementation("io.vertx:vertx-pg-client")
+  implementation("org.postgresql:postgresql:42.3.2")
+
   implementation("io.vertx:vertx-sql-client-templates")
   implementation("org.flywaydb:flyway-core:8.5.0")
-  implementation("org.postgresql:postgresql:42.3.2")
   implementation(kotlin("stdlib-jdk8"))
   implementation("ch.qos.logback:logback-classic:1.2.10")
   implementation("com.fasterxml.jackson.core:jackson-core:2.13.1")

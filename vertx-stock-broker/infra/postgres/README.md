@@ -25,3 +25,11 @@ docker stack deploy -c ./infra/postgres/postgres.yml postgres
 ```
 
 Contains a volume for permanent storage of data. On system restart the data is available again.
+
+## Environment
+
+Adicionar este environment para correr la aplicacion en Intellij IDEA
+
+````
+SERVER_PORT=8888;DB_HOST=localhost;DB_PORT=5432;DB_DATABASE=vertx-stock-broker;DB_USER=postgres;DB_PASSWORD=secret
+```

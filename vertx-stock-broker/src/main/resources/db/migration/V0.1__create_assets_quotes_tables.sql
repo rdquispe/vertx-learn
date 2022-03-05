@@ -1,18 +1,18 @@
-create table assets
+CREATE TABLE assets
 (
-  value varchar primary key
+  value VARCHAR PRIMARY KEY
 );
 
 
-create table quotes
+CREATE TABLE quotes
 (
-  id serial primary key,
-  bid numeric,
-  ask numeric,
-  last_price numeric,
-  volume numeric,
-  asset varchar,
-  foreign key (asset) references assets(value),
-  constraint last_price_is_positive check (last_price > 0),
-  constraint volume_is_positive_or_zero check (volume >= 0)
+  id serial   PRIMARY KEY,
+  bid         NUMERIC,
+  ask         NUMERIC,
+  last_price  NUMERIC,
+  volume      NUMERIC,
+  asset       VARCHAR,
+  FOREIGN KEY (asset) REFERENCES assets(value),
+  CONSTRAINT last_price_is_positive CHECK (last_price > 0),
+  CONSTRAINT volume_is_positive_or_zero CHECK (volume >= 0)
 );

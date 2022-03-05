@@ -26,7 +26,8 @@ class FlywayMigration {
     }
 
     private fun excute(dbConfig: DbConfig) {
-      val jdbcUrl = "jdbc:postgresql://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}"
+      val database = "postgresql"
+      val jdbcUrl = "jdbc:$database://${dbConfig.host}:${dbConfig.port}/${dbConfig.database}"
 
       logger.info("MIGRATING_DB: {}", jdbcUrl)
 
