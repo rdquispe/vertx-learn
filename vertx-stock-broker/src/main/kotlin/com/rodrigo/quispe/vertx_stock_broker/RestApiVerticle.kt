@@ -40,7 +40,7 @@ class RestApiVerticle : AbstractVerticle() {
       .failureHandler(handleFailure())
     AssetsRestApi.attach(restApi, db)
     QuotesRestApi.attach(restApi, db)
-    WatchListRestApi.attach(restApi)
+    WatchListRestApi.attach(restApi, db)
 
     vertx
       .createHttpServer()
