@@ -29,7 +29,7 @@ class PutWatchListFromDatabaseHandler(val db: Pool) : Handler<RoutingContext> {
           if (! context.response().ended()) {
             context.response()
               .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
-              .end(JsonObject().put("message", result).toBuffer())
+              .end()
           }
         }
     }
