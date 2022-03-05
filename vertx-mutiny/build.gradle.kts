@@ -32,6 +32,9 @@ dependencies {
   implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
   implementation("io.vertx:vertx-lang-kotlin")
   implementation(kotlin("stdlib-jdk8"))
+  implementation("ch.qos.logback:logback-classic:1.2.10")
+  implementation("io.vertx:vertx-core:4.2.5")
+  implementation("io.smallrye.reactive:mutiny:1.3.1")
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
 }
