@@ -39,8 +39,9 @@ class VertxMutinyWeb : AbstractVerticle() {
 }
 
 fun main() {
+  val LOG = LoggerFactory.getLogger(VertxMutinyWeb::class.java)
   Vertx.vertx()
     .deployVerticle(VertxMutinyWeb())
     .subscribe()
-    .with { id -> println("Started: $id") }
+    .with { id -> LOG.info("Started: $id") }
 }

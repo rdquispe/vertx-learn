@@ -31,6 +31,11 @@ application {
 dependencies {
   implementation("io.smallrye.reactive:smallrye-mutiny-vertx-core:2.6.0")
   implementation("io.smallrye.reactive:smallrye-mutiny-vertx-web:2.6.0")
+
+  implementation("io.smallrye.reactive:smallrye-mutiny-vertx-pg-client:2.18.1")
+  implementation("org.postgresql:postgresql:42.3.1")
+  implementation("org.testcontainers:postgresql:1.16.3")
+
   implementation(kotlin("stdlib-jdk8"))
   implementation("ch.qos.logback:logback-classic:1.2.10")
 //  implementation("io.smallrye.reactive:mutiny:1.3.1")
