@@ -1,7 +1,7 @@
-create table watchlist
+CREATE TABLE watchlist
 (
-  account_id varchar,
-  asset varchar,
-  foreign key (asset) references broker.assets(value),
-  primary key (account_id, asset)
+  account_id  VARCHAR,
+  asset       VARCHAR,
+  FOREIGN KEY (asset) REFERENCES broker.assets(value),
+  PRIMARY KEY (account_id, asset)
 );
