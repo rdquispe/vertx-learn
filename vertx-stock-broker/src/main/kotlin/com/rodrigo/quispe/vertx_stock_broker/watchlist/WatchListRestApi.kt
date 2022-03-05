@@ -22,6 +22,7 @@ class WatchListRestApi {
       val pgPath = "/pg/account/watchlist/:accountId"
       parent.get(pgPath).handler(GetWatchListFromDatabaseHandler(db))
       parent.put(pgPath).handler(PutWatchListFromDatabaseHandler(db))
+      parent.delete(pgPath).handler(DeleteWatchListDatabaseHandler(db))
     }
 
     fun getAccountId(context: RoutingContext): String {
