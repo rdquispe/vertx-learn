@@ -19,19 +19,18 @@ class PutWatchListFromDatabaseHandler(val db: Pool) : Handler<RoutingContext> {
     val json = context.bodyAsJson
     val watchList = json.mapTo(WatchList::class.java)
 
-    watchList.assets.forEach { asset ->
-      val parameters = hashMapOf<String, Any>("account_id" to accountId, "asset" to asset.name)
+    val parametersBatch = watchList.assets.map { asset ->
+      mapOf<String, Any>("account_id" to accountId, "asset" to asset.name)
+    }.toList()
 
-      SqlTemplate.forQuery(db, "INSERT INTO broker.watchlist (account_id, asset) VALUES (#{account_id}, #{asset})")
-        .execute(parameters)
-        .onFailure { error -> DbResponse.errorHandler(context, error, "WATCHLIST_INSERT") }
-        .onSuccess { result ->
-          if (! context.response().ended()) {
-            context.response()
-              .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
-              .end()
-          }
-        }
-    }
+    SqlTemplate.forUpdate(db, "INSERT INTO broker.watchlist (account_id, asset) VALUES (#{account_id}, #{asset})"+
+    " ON CONFLICT (account_id, asset) DO NOTHING")
+      .executeBatch(parametersBatch)
+      .onFailure { error -> DbResponse.errorHandler(context, error, "WATCHLIST_INSERT") }
+      .onSuccess { result ->
+        context.response()
+          .putHeader(HttpHeaders.CONTENT_TYPE, HttpHeaderValues.APPLICATION_JSON)
+          .end()
+      }
   }
 }
