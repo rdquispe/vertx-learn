@@ -4,7 +4,6 @@ import com.rodrigo.quispe.vertx_stock_broker.db.DbResponse
 import io.netty.handler.codec.http.HttpHeaderValues
 import io.vertx.core.Handler
 import io.vertx.core.http.HttpHeaders
-import io.vertx.core.json.JsonObject
 import io.vertx.ext.web.RoutingContext
 import io.vertx.sqlclient.Pool
 import io.vertx.sqlclient.templates.SqlTemplate
