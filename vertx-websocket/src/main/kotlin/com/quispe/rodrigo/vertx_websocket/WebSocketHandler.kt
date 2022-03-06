@@ -9,8 +9,11 @@ import org.slf4j.LoggerFactory
 class WebSocketHandler constructor(vertx: Vertx) : Handler<ServerWebSocket> {
 
   val LOG = LoggerFactory.getLogger(WebSocketHandler::class.java)
-  val PATH = "/ws/simple/prices"
   var broadcast: PriceBroadcast
+
+  companion object {
+    const val PATH = "/ws/simple/prices"
+  }
 
   init {
     broadcast = PriceBroadcast(vertx)
