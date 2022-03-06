@@ -9,6 +9,7 @@
 
 ## Projects
 
-- vertx-hello-world (Kotlin)
-- vertx-stock-broker (Kotlin)
-- vertx-mutiny (Kotlin)
+- vertx-hello-world
+- vertx-stock-broker
+- vertx-mutiny
+- vertx-websocket
