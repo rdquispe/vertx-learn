@@ -16,7 +16,7 @@ class MainVerticle : AbstractVerticle() {
   override fun start(startPromise: Promise<Void>) {
     vertx
       .createHttpServer()
-      .webSocketHandler(WebSocketHandler())
+      .webSocketHandler(WebSocketHandler(vertx))
       .listen(PORT) { http ->
         if (http.succeeded()) {
           startPromise.complete()

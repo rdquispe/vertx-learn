@@ -1,14 +1,20 @@
 package com.quispe.rodrigo.vertx_websocket
 
 import io.vertx.core.Handler
+import io.vertx.core.Vertx
 import io.vertx.core.http.ServerWebSocket
 import io.vertx.core.http.WebSocketFrame
 import org.slf4j.LoggerFactory
 
-class WebSocketHandler : Handler<ServerWebSocket> {
+class WebSocketHandler constructor(vertx: Vertx) : Handler<ServerWebSocket> {
 
   val LOG = LoggerFactory.getLogger(WebSocketHandler::class.java)
   val PATH = "/ws/simple/prices"
+  var broadcast: PriceBroadcast
+
+  init {
+    broadcast = PriceBroadcast(vertx)
+  }
 
   override fun handle(ws: ServerWebSocket) {
     if (! PATH.equals(ws.path(), ignoreCase = true)) {
@@ -21,9 +27,13 @@ class WebSocketHandler : Handler<ServerWebSocket> {
     LOG.info("Opening web socket connection: {} {}", ws.path(), ws.textHandlerID())
     ws.accept()
     ws.frameHandler(frameHandler(ws))
-    ws.endHandler { onClose -> LOG.info("Close {}, {}", ws.textHandlerID()) }
+    ws.endHandler { onClose ->
+      LOG.info("Close {}, {}", ws.textHandlerID())
+      broadcast.unregister(ws)
+    }
     ws.exceptionHandler { error -> LOG.error("Failed: {}", error) }
     ws.writeTextMessage("Connected!")
+    broadcast.register(ws)
   }
 
   private fun frameHandler(ws: ServerWebSocket): Handler<WebSocketFrame> {
