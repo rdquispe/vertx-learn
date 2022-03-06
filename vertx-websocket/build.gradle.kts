@@ -16,7 +16,7 @@ repositories {
 }
 
 val vertxVersion = "4.2.5"
-val junitJupiterVersion = "5.7.0"
+val junitJupiterVersion = "5.8.2"
 
 val mainVerticleName = "com.quispe.rodrigo.vertx_websocket.MainVerticle"
 val launcherClassName = "io.vertx.core.Launcher"
@@ -31,7 +31,9 @@ application {
 dependencies {
   implementation(platform("io.vertx:vertx-stack-depchain:$vertxVersion"))
   implementation("io.vertx:vertx-lang-kotlin")
+  implementation("io.vertx:vertx-core")
   implementation(kotlin("stdlib-jdk8"))
+  implementation("ch.qos.logback:logback-classic:1.2.10")
   testImplementation("io.vertx:vertx-junit5")
   testImplementation("org.junit.jupiter:junit-jupiter:$junitJupiterVersion")
 }
