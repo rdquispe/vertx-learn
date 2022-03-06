@@ -57,3 +57,22 @@ If you want to learn more about building native executables, please consult http
 Easily start your Reactive RESTful Web Services
 
 [Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+
+
+### Postman
+
+```
+curl --location --request POST 'localhost:8080/users' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "name": "Rodrigo"
+}'
+```
+
+```
+curl --location --request GET 'localhost:8080/users/4'
+```
+
+```
+curl --location --request GET 'localhost:8080/users'
+```
